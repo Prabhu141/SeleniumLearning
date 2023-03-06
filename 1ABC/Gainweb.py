@@ -62,22 +62,3 @@ scontinue[0].click()
 time.sleep(5)
 web.quit()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
