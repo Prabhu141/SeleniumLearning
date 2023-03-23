@@ -1,0 +1,713 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+from bs4 import BeautifulSoup as bs
+from selenium.webdriver.common.by import By
+
+import requests
+
+
+# Open Chrome browser and navigate to the page
+driver = webdriver.Chrome()
+driver.get("https://www.guardiandirect.com/find-a-dentist")
+
+
+zipcode = '77024'
+tit = driver.find_elements(By.XPATH, '//*[@id="postalCode"]')
+tit[0].send_keys(zipcode)
+print('ok')
+time.sleep(10)
+
+
+submit = driver.find_elements(By.XPATH, '//*[@id="dental-fad-hero-cta"]')
+submit[0].click()
+time.sleep(10)
+#Getting all the source of the webpage where we visited
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('datas.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('datas2.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('datas3.csv', index=False)
+
+# while True:
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page2data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page2data2.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page2datas.csv', index=False)
+
+# while True:
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page3data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page3data3.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page3datas.csv', index=False)
+
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page4data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page4data4.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page4datas.csv', index=False)
+
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page5data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page5data5.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page5datas.csv', index=False)
+
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page6data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page6data6.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page6datas.csv', index=False)
+
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page7data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page7data7.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page7datas.csv', index=False)
+
+try:
+    next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.next > a:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)')))
+    next_button.click()
+except:
+    pass
+
+
+time.sleep(10)
+content = driver.page_source
+#Handing over all the contents of the webpage to beautifulsoup to scrape the webpage.
+soup = bs(content, 'html.parser')
+# print(soup)
+
+# soup = bs(r.text, 'html.parser')
+print(soup)
+print(soup.prettify())
+
+
+time.sleep(3)
+hospitalname = soup.find_all('div', class_="provider-results print:break-avoid")
+
+hospitalnames = []
+
+for title in hospitalname:
+  #hospitalimage.append(title.src.strip())
+  hospitalnames.append(title.text.strip())
+
+print(hospitalnames)
+time.sleep(2)
+phonenumber = soup.find_all('div', class_="detail-column icon")
+
+phonenumbers = []
+
+for title in phonenumber:
+  #hospitalimage.append(title.src.strip())
+  phonenumbers.append(title.text.strip())
+
+print(phonenumbers)
+time.sleep(2)
+address = soup.find_all('div', class_="detail-column address icon")
+
+addresses = []
+
+for title in address:
+  #hospitalimage.append(title.src.strip())
+  addresses.append(title.text.strip())
+
+print(addresses)
+time.sleep(2)
+mile = soup.find_all('div', class_="ml-3-sm")
+
+miles = []
+# urldata = []
+for title in mile:
+  #hospitalimage.append(title.src.strip())
+  miles.append(title.text.strip())
+#   urldata.append(title.href)
+
+print(miles)
+time.sleep(3)
+pagelinks = soup.find_all('a', class_="sc-gKclnd sc-iCfMLu bEOvQm iQqRdn tertiary medium")
+
+pagewiselink = []
+
+for link in pagelinks:
+  #hospitalimage.append(title.src.strip())
+  print(link.get('href'))
+  urlhref =link.get('href')
+  pagewiselink.append(urlhref)
+
+time.sleep(4)
+import pandas as pd
+d1 = {'Doctorname': hospitalnames, 'Phone number': phonenumbers,  'miles':miles}
+
+df = pd.DataFrame(data=d1)
+# display(df)
+df.to_csv('page8data.csv', index=False)
+d2 = {'address': addresses,}
+df1 = pd.DataFrame(data=d2)
+# display(df)
+df.to_csv('page8data8.csv', index=False)
+d3 = {'urldata': pagewiselink,}
+df2 = pd.DataFrame(data=d3)
+# display(df)
+df2.to_csv('page8datas.csv', index=False)
+
+
+
+driver.quit()
+
