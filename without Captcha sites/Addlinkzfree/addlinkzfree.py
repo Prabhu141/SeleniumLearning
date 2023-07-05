@@ -58,16 +58,16 @@ def open_website():
             driver.maximize_window()
             time.sleep(5)
 
-            freelink = driver.find_element("xpath", '/html/body/div[5]/div[2]/div[2]/form/table/tbody/tr[1]/td/div/div[1]/table/tbody/tr[1]/td[1]/input')
+            freelink = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[1]/tbody/tr/td/table/tbody/tr[4]/td[1]/input')
             freelink.click()
             time.sleep(5)
 
 
-            Title_field = driver.find_element("xpath", '//*[@id="TITLE"]')
+            Title_field = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[1]/td[2]/input')
             Title_field.send_keys(line[3])
             time.sleep(3)
         
-            URL_field = driver.find_element("xpath", '//*[@id="URL"]')
+            URL_field = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[2]/td[2]/input')
             URL_field.send_keys(line[2])
             time.sleep(3)
             
@@ -79,16 +79,16 @@ def open_website():
             time.sleep(4)
 
 
-            Description_field = driver.find_element("xpath", '//*[@id="DESCRIPTION"]')
+            Description_field = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[3]/td[2]/textarea')
             Description_field.send_keys(line[4])
             time.sleep(3)
 
             
-            username_field = driver.find_element("xpath", '//*[@id="OWNER_NAME"]')
+            username_field = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[4]/td[2]/input')
             username_field.send_keys(line[0])
             time.sleep(3)
 
-            Email_field = driver.find_element("xpath", '//*[@id="OWNER_EMAIL"]')
+            Email_field = driver.find_element("xpath", '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[5]/td[2]/input')
             Email_field.send_keys(line[1])
             time.sleep(3)
 
@@ -100,11 +100,11 @@ def open_website():
             drp.select_by_visible_text(selected_option)
             time.sleep(4)
 
-            agree = driver.find_elements(By.NAME, 'AGREERULES')
-            agree[0].click()
-            time.sleep(10)
+            # agree = driver.find_elements(By.NAME, 'AGREERULES')
+            # agree[0].click()
+            # time.sleep(10)
 
-            submit = driver.find_elements(By.XPATH, '/html/body/div[5]/div[2]/div[2]/form/table/tbody/tr[12]/td/input')
+            submit = driver.find_elements(By.XPATH, '//*[@id="content"]/table/tbody/tr/td/form/table[2]/tbody/tr/td/table/tbody/tr[8]/td[2]/input')
             submit[0].click()
 
 
